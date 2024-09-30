@@ -267,7 +267,7 @@ case "${LB_DERIVATIVE}" in
 
 				# Set architecture-specific variables
 				case "${LB_ARCHITECTURE}" in
-					arm64)
+					arm64|loong64)
 						TARGETS="build_cdrom_gtk build_cdrom_grub"
 						;;
 
@@ -287,7 +287,7 @@ set -e
 
 DEBIAN_INSTALLER=/debian-installer
 mkdir -p \${DEBIAN_INSTALLER}
-git clone https://salsa.debian.org/installer-team/debian-installer.git \${DEBIAN_INSTALLER} --single-branch --no-tags --quiet
+git clone https://github.com/loong64/debian-installer.git \${DEBIAN_INSTALLER} --single-branch --no-tags --quiet
 cd \${DEBIAN_INSTALLER}
 git checkout \$(git rev-list -n 1 --min-age=${SOURCE_DATE_EPOCH} HEAD) --quiet
 if [ "${_QUIET}" != "true" ]
@@ -365,7 +365,7 @@ DOWNLOAD_GTK_INSTALLER=false
 if [ "${LB_DEBIAN_INSTALLER_GUI}" = "true" ]
 then
 	case "${LB_ARCHITECTURE}" in
-		amd64|i386|arm64)
+		amd64|i386|arm64|loong64)
 			DOWNLOAD_GTK_INSTALLER=true
 			;;
 
@@ -431,6 +431,12 @@ then
 			DI_REQ_PACKAGES="grub-efi-arm64 efibootmgr grub-efi-arm64-signed shim-signed" # UEFI (required for d-i, includes suggested packages)
 			DI_REQ_PACKAGES="${DI_REQ_PACKAGES} grub-efi grub-efi-arm64-bin grub2-common mokutil shim-helpers-arm64-signed shim-signed-common shim-unsigned grub-efi-arm64-unsigned" # UEFI (required by Calamares)
 			DI_PACKAGES="linux-image-arm64"
+			;;
+
+		loong64)
+			DI_REQ_PACKAGES="grub-efi-loong64 efibootmgr" # UEFI (required for d-i, includes suggested packages) #Fix me for signed
+			DI_REQ_PACKAGES="${DI_REQ_PACKAGES} grub-efi grub-efi-loong64-bin grub2-common mokutil grub-efi-loong64-unsigned cryptsetup cryptsetup-initramfs keyutils" # UEFI (required by Calamares) #Fix me for signed
+			DI_PACKAGES="linux-image-loong64" # loong64 default flavour loongson-3
 			;;
 
 		powerpc)

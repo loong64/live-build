@@ -259,6 +259,9 @@ parse_commandline_arguments() {
 		"arm64")
 			QEMU_STATIC_EXECUTABLE=qemu-aarch64-static
 			;;
+		"loong64")
+			QEMU_STATIC_EXECUTABLE=qemu-loongarch64-static
+			;;
 		*)
 			output_echo "Error: Unknown architecture ${ARCHITECTURE}"
 			exit 5
