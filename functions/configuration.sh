@@ -244,6 +244,10 @@ Prepare_config ()
 			LB_LINUX_FLAVOURS_WITH_ARCH="${LB_LINUX_FLAVOURS_WITH_ARCH:-itanium}"
 			;;
 
+		loong64)
+			LB_LINUX_FLAVOURS_WITH_ARCH="${LB_LINUX_FLAVOURS_WITH_ARCH:-loong64}"
+			;;
+
 		powerpc)
 			LB_LINUX_FLAVOURS_WITH_ARCH="${LB_LINUX_FLAVOURS_WITH_ARCH:-powerpc64 powerpc}"
 			;;
@@ -315,6 +319,11 @@ Prepare_config ()
 			fi
 			;;
 		arm64)
+			if ! In_list "${LB_IMAGE_TYPE}" hdd netboot; then
+				LB_BOOTLOADER_EFI="${LB_BOOTLOADER_EFI:-grub-efi}"
+			fi
+			;;
+		looong64)
 			if ! In_list "${LB_IMAGE_TYPE}" hdd netboot; then
 				LB_BOOTLOADER_EFI="${LB_BOOTLOADER_EFI:-grub-efi}"
 			fi

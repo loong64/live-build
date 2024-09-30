@@ -32,14 +32,9 @@ Check_stagefile
 # Acquire lock file
 Acquire_lockfile
 
-# Make build config available to chroot hooks. First, make the bind
-# mount and then make it read-only. This can't happen in one mount
-# command, then the resulting mount will be rw (see mount(8)). Making it
-# ro prevents modifications and prevents accidentally removing the
-# contents of the config directory when removing the chroot.
-mkdir -p chroot/live-build/config
-mount -o bind config chroot/live-build/config
-mount -o remount,ro,bind config chroot/live-build/config
+# Make build config available to chroot hooks.
+mkdir -p chroot/live-build
+cp --recursive --preserve=mode,timestamps --dereference config chroot/live-build/config
 
 ## Processing hooks
 if ls config/hooks/normal/*.chroot > /dev/null 2>&1 && (
@@ -92,10 +87,8 @@ then
 	Save_package_cache chroot
 fi
 
-# Remove bind mount of build config inside chroot.
-umount chroot/live-build/config
-rmdir chroot/live-build/config
-rmdir chroot/live-build
+# Remove build config inside chroot.
+rm -rf chroot/live-build
 
 # Creating stage file
 Create_stagefile
